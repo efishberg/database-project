@@ -46,4 +46,15 @@ ON r.CustomerID=c.CustomerID
 GROUP BY c.CustomerID, c.FirstName, c.LastName, c.Email, c.Phone;
 
 
-/* 5. A query that uses subquery.*/
+/* 5. A query that uses subquery.
+
+Show the reservation ID of those orders in the year 2017 of which the total payment is greater than the average total due of all the
+orders of the same year*/
+SELECT c.CustomerID, c.FirstName, c.LastName, r.ReservationID, r.CheckOutDate
+FROM Reservation AS r
+JOIN Customer AS c
+ON r.CustomerID=c.CustomerID
+WHERE YEAR(CheckOutDate) = '2017'
+AND TotalPayment > (Select AVG(n.TotalPayment)
+						FROM Reservation AS n
+						WHERE YEAR(CheckOutDate) = '2017');
